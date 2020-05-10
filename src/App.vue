@@ -1,28 +1,34 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-container v-cloak @drop.prevent="addDropFile" @dragover.prevent>
+      <v-file-input
+        v-model="file"
+        accept="image/png, image/jpeg, image/bmp"
+        prepend-icon="mdi-camera"
+        placeholder="画像をドラッグ＆ドロップか選択してください。"
+      ></v-file-input>
+      <canvas></canvas>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data: () => ({
+    file: null,
+    rules: [
+      (value) =>
+        !value ||
+        value.size < 2000000 ||
+        "Avatar size should be less than 2 MB!",
+    ],
+  }),
+  methods: {
+    addDropFile(e) {
+      this.file = e.dataTransfer.files[0];
+      console.log(this.file);
+    },
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
