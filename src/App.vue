@@ -9,6 +9,9 @@
         prepend-icon="mdi-camera"
         placeholder="画像をドラッグ＆ドロップするか選択してください。"
       ></v-file-input>
+      <v-btn class="my-2" color="primary" :disabled="!file" block
+        >Detect!!</v-btn
+      >
       <v-row justify="center" align="center">
         <canvas :width="canvasWidth" height="450" ref="preview"></canvas>
       </v-row>
@@ -32,6 +35,7 @@ export default {
   methods: {
     addDropFile(e) {
       this.file = e.dataTransfer.files[0];
+      this.setImage();
     },
     setImage() {
       this.clearCanvas();
