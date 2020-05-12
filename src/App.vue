@@ -20,6 +20,9 @@
       <v-row justify="center" align="center">
         <canvas :width="canvasWidth" height="450" ref="preview"></canvas>
       </v-row>
+      <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
     </v-container>
   </v-app>
 </template>
@@ -40,6 +43,7 @@ export default {
     canvasWidth: 800,
     imgWidth: 800,
     results: {},
+    overlay: false,
   }),
   methods: {
     addDropFile(e) {
@@ -78,6 +82,7 @@ export default {
       context.clearRect(0, 0, canvas.width, canvas.height);
     },
     detectFaces: async function() {
+      this.overlay = true;
       try {
         const data = await detectFaces(this.file);
 
@@ -90,8 +95,10 @@ export default {
           this.results = boundingPolies;
           this.drawRects();
         }
+        this.overlay = false;
       } catch (error) {
         console.log(error);
+        this.overlay = false;
       }
     },
     getRects() {
